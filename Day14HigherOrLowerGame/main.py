@@ -7,10 +7,6 @@ import random
 import os
 from game_data import data
 
-# Print the logo.
-print(logo)
-
-
 # Keep track of the score.
 score = 0
 
@@ -33,16 +29,27 @@ def random_account():
 
 
 def play_game():
+    # Clear the screen
+    os.system('cls')
+
+    # Print the logo.
+    print(logo)
+
     # Keep track of the score.
     global score
     account_A = random_account()
     account_B = random_account()
+    # Make sure account A and B are not the same.
+    while account_A == account_B:
+        account_B = random_account()
     print(f"Compare A: {account_A['name']}, a {account_A['description']}, from {account_A['country']}.")
     print(vs)
     print(f"Against B: {account_B['name']}, a {account_B['description']}, from {account_B['country']}.")
+
     # Ask user for a guess.
     guess = input("Who has more followers? Type 'A' or 'B': ").lower()
     correct_guess = False
+
     # Check if user is correct.
     if guess == 'a':
         if account_A['follower_count'] > account_B['follower_count']:
@@ -62,6 +69,7 @@ def play_game():
     else:
         print("You're wrong!")
         print(f"Final score: {score}")
+        score = 0
     if play_again():
         os.system('cls')
         play_game()
