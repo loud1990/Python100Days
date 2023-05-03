@@ -1,6 +1,9 @@
 from turtle import Turtle, Screen
 import time
 from paddle import Paddle
+from scoreboard import Scoreboard
+from ball import Ball
+
 # Constants go here
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
@@ -15,13 +18,21 @@ screen.tracer(0) # don't update the screen all the time, this eliminates the str
 screen.listen()
 
 # Set up paddle
-right_paddle = Paddle(350, 0)
-left_paddle = Paddle(-350, 0)
+right_paddle = Paddle(((SCREEN_WIDTH / 2) - 20), 0)
+left_paddle = Paddle(((-SCREEN_WIDTH / 2) + 20), 0)
 
-screen.onkey(right_paddle.up, "Up")
-screen.onkey(right_paddle.down, "Down")
-screen.onkey(left_paddle.up, "w")
-screen.onkey(left_paddle.down, "s")
+# Set up scoreboard
+scoreboard = Scoreboard()
+scoreboard.draw_center_line()
+
+# Set up ball
+ball = Ball()
+
+# Listen for key presses to move paddles
+screen.onkeypress(right_paddle.up, "Up")
+screen.onkeypress(right_paddle.down, "Down")
+screen.onkeypress(left_paddle.up, "w")
+screen.onkeypress(left_paddle.down, "s")
 
 screen.update()
 
@@ -30,6 +41,27 @@ game_on = True
 while game_on:
     screen.update() # only update the screen once all of the segments have moved forward
     time.sleep(0.1)
+    ball.move()
+
+    # Detect collision with wall
+    if ball.ycor() > ((SCREEN_HEIGHT / 2) - 20) or ball.ycor() < ((-SCREEN_HEIGHT / 2) + 20):
+        ball.wall_bounce()
+
+    if ball.xcor() > ((SCREEN_WIDTH / 2) - 20):
+        scoreboard.l_score += 1
+        scoreboard.display_scoreboard()
+        print("score")
+        ball.reset()
+
+    if ball.xcor() < ((-SCREEN_WIDTH / 2) + 20):
+        scoreboard.r_score += 1
+        scoreboard.display_scoreboard()
+        print("score")
+        ball.reset()
+
+    # Detect collision with paddle
+    if left_paddle.distance(ball) < 30 and ball.xcor() > ((SCREEN_WIDTH / 2) - 20) or right_paddle.distance(ball) < 30 and ball.xcor() < ((SCREEN_WIDTH / 2) - 20):
+        ball.paddle_bounce()
 
     '''
     # Detect collision with food
