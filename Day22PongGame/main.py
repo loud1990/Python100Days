@@ -40,7 +40,7 @@ screen.update()
 game_on = True
 while game_on:
     screen.update() # only update the screen once all of the segments have moved forward
-    time.sleep(0.1)
+    time.sleep(0.05)
     ball.move()
 
     # Detect collision with wall

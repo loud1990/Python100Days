@@ -3,7 +3,7 @@ from turtle import Turtle
 
 STARTING_X_POS = 350
 STARTING_Y_POS = 0
-MOVE_SPEED = 20
+MOVE_SPEED = 40
 
 
 class Paddle(Turtle):
