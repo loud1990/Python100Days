@@ -59,6 +59,7 @@ while game_on:
         print("score")
         ball.reset()
 
+    # TODO fix left paddle collision
     # Detect collision with paddle
     if left_paddle.distance(ball) < 30 and ball.xcor() > ((SCREEN_WIDTH / 2) - 20) or right_paddle.distance(ball) < 30 and ball.xcor() < ((SCREEN_WIDTH / 2) - 20):
         ball.paddle_bounce()
